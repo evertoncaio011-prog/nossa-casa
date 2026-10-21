@@ -8,13 +8,14 @@ const uid=()=>Math.random().toString(36).slice(2,10);
 const CATS0=['Água','Energia elétrica','Internet','Aluguel ou financiamento','Condomínio','Gás','Telefone','Mercado','Transporte','Saúde','Assinaturas','Educação','Cartão de crédito','Outros'];
 const METH=['Pix','Boleto','Cartão','Débito automático','Dinheiro','Outra'];
 let S,page='dash',ym=today().slice(0,7),filt={q:'',cat:'',st:'',type:'',meth:''},calSel=null;
-function load(){try{S=JSON.parse(localStorage.getItem('casa-v1'))}catch(e){}if(!S)S=demo()}
+function load(){try{S=JSON.parse(localStorage.getItem('casa-v1'))}catch(e){}if(!S)S=demo();else if(!S.bills.length&&!S.pays.length)clearDemoBudgets()}
 function save(){try{localStorage.setItem('casa-v1',JSON.stringify(S))}catch(e){}}
+function clearDemoBudgets(){let changed=false;Object.keys(S.bud||{}).forEach(m=>{const b=S.bud[m];if(b.demo||(b.init===350000&&b.extra===50000)){delete S.bud[m];changed=true}});if(changed)save()}
 function demo(){const m=today().slice(0,7),t=today(),d=x=>m+'-'+pad(x),pm=(n)=>{const [y,mo]=m.split('-').map(Number);const dt=new Date(y,mo-1+n,1);return dt.getFullYear()+'-'+pad(dt.getMonth()+1)};
 const mk=(name,cat,v,day,meth)=>({id:uid(),name,cat,amount:v,due:d(day),type:'fixa',rec:'mensal',method:meth,notes:'',demo:1});
 const b=[mk('Aluguel','Aluguel ou financiamento',120000,5,'Boleto'),mk('Energia','Energia elétrica',18000,8,'Boleto'),mk('Água','Água',9000,12,'Boleto'),mk('Internet','Internet',12000,10,'Pix'),mk('Mercado','Mercado',65000,28,'Cartão'),mk('Cartão de crédito','Cartão de crédito',50000,20,'Boleto')];
 b.forEach(x=>x.tpl=x.id);const p=[{id:uid(),billId:b[0].id,paid:120000,fee:0,disc:0,date:d(4),method:'Boleto',notes:'',demo:1},{id:uid(),billId:b[3].id,paid:12000,fee:0,disc:0,date:d(9),method:'Pix',notes:'',demo:1},{id:uid(),billId:b[2].id,paid:4000,fee:0,disc:0,date:d(11),method:'Pix',notes:'Parcial',demo:1}];
-const bud={};bud[m]={init:350000,extra:50000};return{bills:b,pays:p,bud,cats:[]}}
+const bud={};bud[m]={init:350000,extra:50000,demo:1};return{bills:b,pays:p,bud,cats:[]}}
 const allCats=()=>[...CATS0,...S.cats];
 function lastDay(y,m){return new Date(y,m,0).getDate()}
 function gen(){ // recorrência sem duplicar
@@ -70,7 +71,7 @@ function rep(){const ms=[...new Set([...S.bills.map(b=>b.due.slice(0,7)),ym])].s
  <div class="card"><b>Pagamentos realizados</b>${[...S.pays].sort((a,b)=>b.date.localeCompare(a.date)).map(p=>{const b=S.bills.find(x=>x.id===p.billId);return`<div class="row"><span class="n">${esc(b?.name||'—')}<div class="k">${fmtD(p.date)} · ${p.method}${p.fee?' · juros/multa '+brl(p.fee):''}${p.disc?' · desconto '+brl(p.disc):''}</div></div><b>${brl(p.paid)}</b></div>`}).join('')||'<p class="k">Nenhum pagamento.</p>'}</div>`}
 function cats(){return`<div class="card"><div class="row"><input id="nc" placeholder="Nova categoria"><button class="btn p" onclick="const v=$('#nc').value.trim();if(v&&!allCats().includes(v)){S.cats.push(v);save();render()}">Adicionar</button></div>${allCats().map(c=>`<div class="row"><span class="n">${esc(c)}</span>${S.cats.includes(c)?`<button class="btn s d" onclick="S.cats=S.cats.filter(x=>x!=='${esc(c).replace(/'/g,"\\'")}');save();render()">Remover</button>`:'<span class="k">padrão</span>'}</div>`).join('')}</div>`}
 function cfg(){return`<div class="card"><p>Os dados ficam salvos neste navegador (localStorage), numa camada única (<code>load/save</code>) pronta para trocar por Supabase.</p><button class="btn" onclick="rmDemo()">Remover dados fictícios</button> <button class="btn" onclick="document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark'">Alternar tema</button> <button class="btn d" onclick="if(confirm('Apagar TODOS os dados?')){localStorage.removeItem('casa-v1');load();render()}">Apagar tudo</button></div>`}
-function rmDemo(){if(!confirm('Remover contas e pagamentos fictícios?'))return;S.bills=S.bills.filter(b=>!b.demo);S.pays=S.pays.filter(p=>!p.demo);save();render()}
+function rmDemo(){if(!confirm('Remover os dados fictícios? Isso também apaga o orçamento inicial de demonstração.'))return;S.bills=S.bills.filter(b=>!b.demo);S.pays=S.pays.filter(p=>!p.demo);clearDemoBudgets();save();render()}
 const close=()=>$('#md').innerHTML='';
 const opts=(a,v)=>a.map(x=>`<option ${x===v?'selected':''}>${x}</option>`).join('');
 function billModal(id){const b=S.bills.find(x=>x.id===id)||{name:'',cat:'Outros',amount:0,due:ym+'-10',type:'fixa',rec:'unica',method:'Pix',notes:''};
