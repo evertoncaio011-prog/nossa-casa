@@ -12,8 +12,15 @@ declare global {
 
 export default function Page() {
   useEffect(() => {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const configuredUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/+$/, "");
+    const url = configuredUrl?.replace(/\/rest\/v1$/i, "");
     const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (configuredUrl && url !== configuredUrl) {
+      console.warn(
+        "NEXT_PUBLIC_SUPABASE_URL must be the project URL, not the REST API URL.",
+      );
+    }
 
     if (url && key && !window.casaSupabase) {
       window.casaSupabase = createClient(url, key);
