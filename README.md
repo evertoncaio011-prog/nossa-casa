@@ -30,3 +30,12 @@ Sem as variáveis do Supabase, o app permanece no modo local deste navegador e n
 ## Deploy na Vercel
 
 O projeto está conectado ao GitHub e pode ser publicado pela integração da Vercel. Configure as variáveis do Supabase no projeto para habilitar login e sincronização em produção.
+
+## Instalar no Android (PWA)
+
+O app é um PWA: depois de publicado em **HTTPS** (Vercel ou GitHub Pages), abra o endereço no **Chrome do Android**, toque no menu ⋮ e escolha **Instalar app** (ou **Adicionar à tela inicial**). Ele abre em tela cheia, com ícone próprio, e o shell do app funciona offline; os dados continuam vindo do Supabase e precisam de internet para sincronizar.
+
+- Manifest: `public/manifest.webmanifest` · Service worker: `public/nossa-casa-sw.js` · Ícones: `public/icons/`
+- O service worker só é registrado no build de produção (`npm run build`), não no `npm run dev`.
+- Ao mudar arquivos estáticos em cache, aumente `VERSION` em `public/nossa-casa-sw.js`.
+- Se publicar em subpasta (GitHub Pages), o `GITHUB_PAGES_BASE_PATH` já é respeitado.

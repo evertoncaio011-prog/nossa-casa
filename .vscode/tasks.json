@@ -1,0 +1,18 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Next.js: iniciar localhost",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$nodeDir = Get-ChildItem \"$env:LOCALAPPDATA\\Microsoft\\WinGet\\Packages\\OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe\\node-v*-win-x64\" -Directory | Sort-Object Name -Descending | Select-Object -First 1; if (!$nodeDir) { throw 'Node.js LTS nao encontrado' }; $env:PATH = \"$($nodeDir.FullName);$env:PATH\"; npm run dev"
+			],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}

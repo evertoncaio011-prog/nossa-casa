@@ -26,6 +26,14 @@ export default function Page() {
       window.casaSupabase = createClient(url, key);
     }
 
+    // PWA: registra o service worker (instalação no Android e uso offline básico).
+    if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
+      const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+      navigator.serviceWorker
+        .register(`${base}/nossa-casa-sw.js`, { scope: `${base}/` })
+        .catch((err) => console.warn("Service worker não registrado:", err));
+    }
+
     if (!document.querySelector("script[data-casa-app]")) {
       const script = document.createElement("script");
       script.src = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/app.js`;
