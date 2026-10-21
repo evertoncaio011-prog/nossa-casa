@@ -1,0 +1,26 @@
+:root{--bg:#f5f6f8;--card:#fff;--tx:#1b2430;--mu:#6b7686;--bd:#e4e7ec;--g:#16a34a;--r:#dc2626;--o:#d97706;--pr:#0f766e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#10151c;--card:#19212b;--tx:#e8ecf1;--mu:#8d99a8;--bd:#2a3441;--g:#4ade80;--r:#f87171;--o:#fbbf24;--pr:#2dd4bf;color-scheme:dark}}
+:root[data-theme=dark]{--bg:#10151c;--card:#19212b;--tx:#e8ecf1;--mu:#8d99a8;--bd:#2a3441;--g:#4ade80;--r:#f87171;--o:#fbbf24;--pr:#2dd4bf;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;display:flex;min-height:100vh}
+nav{width:220px;background:var(--card);border-right:1px solid var(--bd);padding:20px 12px;position:sticky;top:0;height:100vh;flex-shrink:0}
+nav h1{font-size:17px;margin:0 8px 18px;color:var(--pr)}nav button{display:block;width:100%;text-align:left;border:0;background:none;color:var(--tx);padding:10px 12px;border-radius:10px;font:inherit;cursor:pointer}
+nav button.on{background:color-mix(in srgb,var(--pr) 14%,transparent);color:var(--pr);font-weight:600}
+main{flex:1;padding:22px;max-width:1100px;min-width:0}
+.top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px}.top h2{margin:0;flex:1;font-size:21px}
+.btn{border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:8px 14px;border-radius:10px;font:inherit;cursor:pointer}.btn.p{background:var(--pr);color:#fff;border-color:var(--pr)}.btn.s{padding:4px 9px;font-size:13px}.btn.d{color:var(--r)}
+input,select,textarea{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:8px;width:100%}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:12px}.grid .card{margin:0}
+.k{font-size:12px;color:var(--mu)}.v{font-size:21px;font-weight:700;margin-top:4px}.g{color:var(--g)}.r{color:var(--r)}.o{color:var(--o)}
+.bar{height:10px;background:var(--bd);border-radius:6px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:var(--g)}
+.row{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd);flex-wrap:wrap}.row:last-child{border:0}.row .n{flex:1;min-width:140px}
+.tag{font-size:12px;padding:2px 9px;border-radius:99px;font-weight:600}.tag.pago{background:#16a34a22;color:var(--g)}.tag.pendente{background:#d9770622;color:var(--o)}.tag.vencido{background:#dc262622;color:var(--r)}
+.alert{background:#dc262618;color:var(--r);border:1px solid var(--r);padding:10px 14px;border-radius:10px;margin-bottom:14px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.cal div{min-height:58px;background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:4px;font-size:12px;cursor:pointer}.cal .h{min-height:0;background:none;border:0;text-align:center;color:var(--mu);cursor:default}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:2px}
+.modal{position:fixed;inset:0;background:#0007;display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}.modal>div{background:var(--card);border-radius:14px;padding:20px;width:100%;max-width:460px;max-height:90vh;overflow:auto}
+label{display:block;font-size:12px;color:var(--mu);margin:10px 0 3px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.demo{font-size:11px;background:var(--bd);padding:1px 6px;border-radius:6px;color:var(--mu)}
+.cb{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:13px}.cb b{width:120px;font-weight:400}.cb .bar{flex:1;margin:0}
+@media(max-width:760px){body{flex-direction:column}nav{width:100%;height:auto;position:fixed;bottom:0;top:auto;z-index:40;display:flex;overflow-x:auto;padding:6px;border-right:0;border-top:1px solid var(--bd);padding-bottom:calc(6px + env(safe-area-inset-bottom,0px))}nav h1{display:none}nav button{white-space:nowrap;width:auto;font-size:13px;padding:8px 10px}main{padding:14px 14px 90px}.two{grid-template-columns:1fr}}
